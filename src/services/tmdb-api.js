@@ -49,7 +49,7 @@ const getMovieDetails = movieId => {
         poster: IMAGE_URL + poster,
         overview,
         genres,
-        userScore,
+        userScore: Math.round(userScore * 10),
       };
     })
     .catch(error => {
