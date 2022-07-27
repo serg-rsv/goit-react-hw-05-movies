@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const BASE_URL = 'https://api.themoviedb.org/3/';
 // https://image.tmdb.org/t/p/w400/kqjL17yufvn9OVLyXYpvtyrFfak.jpg
-const IMAGE_URL = 'https://image.tmdb.org/t/p/w400';
+const IMAGE_URL = 'https://image.tmdb.org/t/p/w300';
 const API_KEY = '5ce599886a4c0703a030654068991e03';
 
 axios.defaults.baseURL = BASE_URL;
@@ -14,16 +14,7 @@ const getTrendingMovies = () => {
       results.map(({ id, title }) => ({ id, title }))
     )
     .catch(error => {
-      if (error.response) {
-        console.log(error.response.data);
-        console.log(error.response.status);
-        console.log(error.response.headers);
-      } else if (error.request) {
-        console.log(error.request);
-      } else {
-        console.log('Error', error.message);
-      }
-      console.log(error.config);
+      console.log(error.message);
     });
 };
 
@@ -32,17 +23,18 @@ const getSearchMovies = query => {};
 const getMovieDetails = movieId => {
   return axios
     .get(`/movie/${movieId}?api_key=${API_KEY}`)
-    .then(({ data }) => {
-      const {
-        id,
-        title,
-        release_date: releaseYear,
-        poster_path: poster,
-        overview,
-        genres,
-        vote_average: userScore,
-      } = data;
-      return {
+    .then(
+      ({
+        data: {
+          id,
+          title,
+          release_date: releaseYear,
+          poster_path: poster,
+          overview,
+          genres,
+          vote_average: userScore,
+        },
+      }) => ({
         id,
         title,
         releaseYear: new Date(releaseYear).getFullYear(),
@@ -50,25 +42,39 @@ const getMovieDetails = movieId => {
         overview,
         genres,
         userScore: Math.round(userScore * 10),
-      };
-    })
+      })
+    )
     .catch(error => {
-      if (error.response) {
-        console.log(error.response.data);
-        console.log(error.response.status);
-        console.log(error.response.headers);
-      } else if (error.request) {
-        console.log(error.request);
-      } else {
-        console.log('Error', error.message);
-      }
-      console.log(error.config);
+      console.log(error.message);
     });
 };
 
-const getMovieCredits = movieId => {};
+const getMovieCredits = movieId => {
+  return axios
+    .get(`/movie/${movieId}/credits?api_key=${API_KEY}`)
+    .then(({ data: { cast } }) =>
+      cast.map(({ id, name, character, profile_path: photo }) => ({
+        id,
+        name,
+        character,
+        photo: IMAGE_URL + photo,
+      }))
+    )
+    .catch(error => {
+      console.log(error.message);
+    });
+};
 
-const getMovieReviews = movieId => {};
+const getMovieReviews = movieId => {
+  return axios
+    .get(`/movie/${movieId}/reviews?api_key=${API_KEY}`)
+    .then(({ data: { results } }) =>
+      results.map(({ id, author, content }) => ({ id, author, content }))
+    )
+    .catch(error => {
+      console.log(error.message);
+    });
+};
 
 export {
   getTrendingMovies,
