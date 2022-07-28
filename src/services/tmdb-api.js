@@ -18,7 +18,18 @@ const getTrendingMovies = () => {
     });
 };
 
-const getSearchMovies = query => {};
+const getSearchMovies = query => {
+  return axios
+    .get(
+      `/search/movie?api_key=${API_KEY}&language=en-US&query=${query}&page=1`
+    )
+    .then(({ data: { results } }) =>
+      results.map(({ id, title }) => ({ id, title }))
+    )
+    .catch(error => {
+      console.log(error.message);
+    });
+};
 
 const getMovieDetails = movieId => {
   return axios
