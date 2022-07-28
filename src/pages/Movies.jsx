@@ -1,13 +1,18 @@
-import { useState } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Link, useSearchParams, useLocation } from 'react-router-dom';
 import * as api from 'services/tmdb-api';
 
 export const Movies = () => {
   const [query, setQuery] = useState('');
   const [movies, setMovies] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams();
+  const location = useLocation();
 
-  console.log('searchParams', searchParams);
+  const searchQuery = searchParams.get('query');
+
+  useEffect(() => {
+    searchQuery && api.getSearchMovies(searchQuery).then(setMovies);
+  }, [searchQuery]);
 
   const handleSubmit = async e => {
     e.preventDefault();
@@ -33,7 +38,9 @@ export const Movies = () => {
         <ul>
           {movies.map(({ id, title }) => (
             <li key={id}>
-              <Link to={`/movies/${id}`}>{title}</Link>
+              <Link to={`/movies/${id}`} state={{ from: location }}>
+                {title}
+              </Link>
             </li>
           ))}
         </ul>

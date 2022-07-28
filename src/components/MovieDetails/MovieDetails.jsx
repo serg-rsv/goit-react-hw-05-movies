@@ -1,10 +1,18 @@
 import { useState, useEffect } from 'react';
-import { Link, useParams, Outlet } from 'react-router-dom';
+import {
+  Link,
+  useParams,
+  Outlet,
+  useLocation,
+  useNavigate,
+} from 'react-router-dom';
 import * as api from 'services/tmdb-api';
 
 export const MovieDetails = () => {
   const [movie, setMovie] = useState(null);
   const { movieId } = useParams('movieId');
+  const location = useLocation();
+  const navigate = useNavigate();
 
   const { title, releaseYear, poster, overview, genres, userScore } =
     movie ?? {};
@@ -13,7 +21,9 @@ export const MovieDetails = () => {
     api.getMovieDetails(movieId).then(setMovie);
   }, [movieId]);
 
-  const handleBack = () => {};
+  const handleBack = () => {
+    navigate(location.state.from);
+  };
 
   return (
     <>
