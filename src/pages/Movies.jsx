@@ -7,6 +7,8 @@ export const Movies = () => {
   const [movies, setMovies] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams();
 
+  console.log('searchParams', searchParams);
+
   const handleSubmit = async e => {
     e.preventDefault();
 
