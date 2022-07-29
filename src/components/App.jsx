@@ -1,11 +1,13 @@
 import { lazy } from 'react';
 import { Routes, Route, Link } from 'react-router-dom';
-import { Layout } from 'pages/Layout';
+import { Layout } from 'pages/Layout/Layout';
 import { GlobalStyle } from 'styles/GlobalStyle';
 
-const Home = lazy(() => import('pages/Home' /* webpackChunkName: "Home" */));
+const Home = lazy(() =>
+  import('pages/Home/Home' /* webpackChunkName: "Home" */)
+);
 const Movies = lazy(() =>
-  import('pages/Movies' /* webpackChunkName: "Movies" */)
+  import('pages/Movies/Movies' /* webpackChunkName: "Movies" */)
 );
 const MovieDetails = lazy(() =>
   import(

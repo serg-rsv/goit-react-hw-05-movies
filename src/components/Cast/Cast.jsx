@@ -1,6 +1,7 @@
 import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import * as api from 'services/tmdb-api';
+import { CastStyled, Photo } from 'components/Cast/CastStyled';
 
 const Cast = () => {
   const { movieId } = useParams('movieId');
@@ -15,11 +16,11 @@ const Cast = () => {
       {credits.length > 0 &&
         credits.map(({ id, name, character, photo }) => {
           return (
-            <li key={id}>
-              <img src={photo} alt={name} />
-              <p>{name}</p>
-              <p>{character}</p>
-            </li>
+            <CastStyled key={id}>
+              <Photo src={photo} alt={name} />
+              <h4>{name}</h4>
+              <p>Character: {character}</p>
+            </CastStyled>
           );
         })}
     </ul>
