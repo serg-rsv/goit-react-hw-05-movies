@@ -1,4 +1,5 @@
 import axios from 'axios';
+import photoHolder from 'images/ava.jpg';
 
 const BASE_URL = 'https://api.themoviedb.org/3/';
 // https://image.tmdb.org/t/p/w400/kqjL17yufvn9OVLyXYpvtyrFfak.jpg
@@ -68,7 +69,7 @@ const getMovieCredits = movieId => {
         id,
         name,
         character,
-        photo: IMAGE_URL + photo,
+        photo: photo ? IMAGE_URL + photo : photoHolder,
       }))
     )
     .catch(error => {

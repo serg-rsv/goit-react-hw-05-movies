@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import { Loading } from 'components/Loading/Loading';
+import { useState, useEffect, Suspense } from 'react';
 import {
   Link,
   useParams,
@@ -8,11 +9,12 @@ import {
 } from 'react-router-dom';
 import * as api from 'services/tmdb-api';
 
-export const MovieDetails = () => {
+const MovieDetails = () => {
   const [movie, setMovie] = useState(null);
   const { movieId } = useParams('movieId');
   const location = useLocation();
   const navigate = useNavigate();
+  const backLinkHref = location.state?.from ?? '/movies';
 
   const { title, releaseYear, poster, overview, genres, userScore } =
     movie ?? {};
@@ -22,13 +24,13 @@ export const MovieDetails = () => {
   }, [movieId]);
 
   const handleBack = () => {
-    navigate(location.state.from);
+    navigate(backLinkHref);
   };
 
   return (
     <>
       <button type="button" onClick={handleBack}>
-        Go back
+        ⮜ Go back
       </button>
       {movie && (
         <>
@@ -45,16 +47,24 @@ export const MovieDetails = () => {
           <p>Additional information</p>
           <ul>
             <li>
-              <Link to={'cast'}>Cast</Link>
+              <Link to={'cast'} state={{ from: location?.state?.from }}>
+                Cast
+              </Link>
             </li>
             <li>
-              <Link to={'reviews'}>Reviews</Link>
+              <Link to={'reviews'} state={{ from: location?.state?.from }}>
+                Reviews
+              </Link>
             </li>
           </ul>
           <hr />
-          <Outlet />
+          <Suspense fallback={<Loading />}>
+            <Outlet />
+          </Suspense>
         </>
       )}
     </>
   );
 };
+
+export default MovieDetails;

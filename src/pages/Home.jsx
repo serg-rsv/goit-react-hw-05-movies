@@ -2,7 +2,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import * as api from 'services/tmdb-api';
 
-export const Home = () => {
+const Home = () => {
   const [trandingMovies, setTrandingMovies] = useState([]);
   const location = useLocation();
 
@@ -27,3 +27,5 @@ export const Home = () => {
     </>
   );
 };
+
+export default Home;
