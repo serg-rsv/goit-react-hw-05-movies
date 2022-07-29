@@ -1,5 +1,5 @@
 import { lazy } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Link } from 'react-router-dom';
 import { Layout } from 'pages/Layout';
 import { GlobalStyle } from 'styles/GlobalStyle';
 
@@ -31,8 +31,16 @@ export const App = () => {
             <Route path="cast" element={<Cast />} />
             <Route path="reviews" element={<Reviews />} />
           </Route>
-          <Route path="*" element={<h2>404 Not found :(</h2>} />
         </Route>
+        <Route
+          path="*"
+          element={
+            <>
+              <h2>404 Not found :(</h2>
+              <Link to="/">Back to home</Link>
+            </>
+          }
+        />
       </Routes>
     </>
   );
